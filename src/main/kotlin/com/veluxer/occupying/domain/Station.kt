@@ -1,5 +1,57 @@
+@file:Suppress("EnumEntryName", "NonAsciiCharacters")
+
 package com.veluxer.occupying.domain
 
-enum class Station {
+import com.veluxer.occupying.domain.TrainType.KTX
+import com.veluxer.occupying.domain.TrainType.SRT
 
+enum class Station(val label: String, val code: String, val availableTrain: List<TrainType>) {
+    SEOUL("서울", "0001", listOf(KTX)),
+    YONGSAN("용산", "0104", listOf(KTX)),
+    GEOMAM("검암", "0918", listOf(KTX)),
+    YEONGDEUNGPO("영등포", "0002", listOf(KTX)),
+    GWANGMYEONG("광명", "0501", listOf(KTX)),
+    SUWON("수원", "0003", listOf(KTX)),
+    CHEONAN_ASAN("천안아산", "0502", listOf(KTX, SRT)),
+    OSONG("오송", "0297", listOf(KTX, SRT)),
+    DAEJEON("대전", "0010", listOf(KTX, SRT)),
+    SEO_DAEJEON("서대전", "0025", listOf(KTX)),
+    GIMCHEON_GUMI("김천구미", "0507", listOf(KTX, SRT)),
+    DONG_DAEGU("동대구", "0015", listOf(KTX, SRT)),
+    POHANG("포항", "0515", listOf(KTX)),
+    MIRYANG("밀양", "0017", listOf(KTX)),
+    GUPO("구포", "0019", listOf(KTX)),
+    BUSAN("부산", "0020", listOf(KTX, SRT)),
+    SHIN_KYUNGJU("신경주", "0508", listOf(KTX, SRT)),
+    ULSAN("울산", "0509", listOf(KTX, SRT)),
+    JINJU("진주", "0063", listOf(KTX)),
+    MASAN("마산", "0059", listOf(KTX)),
+    CHANGWON("창원", "0057", listOf(KTX)),
+    CHANGWON_JUNGANG("창원중앙", "0512", listOf(KTX)),
+    JINYOUNG("진영", "0056", listOf(KTX)),
+    GYEONGSAN("경산", "0024", listOf(KTX)),
+    NONSAN("논산", "0027", listOf(KTX)),
+    GONGJU("공주", "0514", listOf(KTX, SRT)),
+    IKSAN("익산", "0030", listOf(KTX, SRT)),
+    JEONGEUP("정읍", "0033", listOf(KTX, SRT)),
+    GWANGJU_SONGJEONG("광주송정", "0036", listOf(KTX, SRT)),
+    NAJU("나주", "0037", listOf(KTX)),
+    MOKPO("목포", "0041", listOf(KTX, SRT)),
+    JEONJU("전주", "0045", listOf(KTX)),
+    NAMWON("남원", "0048", listOf(KTX)),
+    SUNCHEON("순천", "0051", listOf(KTX)),
+    YEOSU("여수", "0053", listOf(KTX)),
+    CHEONGNYANGNI("청량리", "0090", listOf(KTX)),
+    GANGNEUNG("강릉", "0115", listOf(KTX)),
+    HAENGSHIN("행신", "0390", listOf(KTX)),
+    GYERYONG("계룡", "0218", listOf(KTX)),
+    YEOCHEON("여천", "0139", listOf(KTX)),
+    GURYE_GU("구례구", "0050", listOf(KTX)),
+    GOKSEONG("곡성", "0049", listOf(KTX)),
+    JINBU("진부", "0519", listOf(KTX)),
+    PYEONGCHANG("평창", "0518", listOf(KTX)),
+    DONGHAE("동해", "0113", listOf(KTX)),
+    SUSEO("수서", "0551", listOf(SRT)),
+    DONGTAN("동탄", "0552", listOf(SRT)),
+    JIJE("지제", "0553", listOf(SRT)),
 }
