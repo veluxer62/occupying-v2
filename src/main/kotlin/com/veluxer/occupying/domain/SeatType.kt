@@ -5,4 +5,3 @@ enum class SeatType(val label: String, val code: String) {
     WINDOW_SEAT("창가", "012"),
     AISLE_SEAT("복도", "013"),
 }
-

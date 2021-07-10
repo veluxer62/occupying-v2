@@ -9,5 +9,4 @@ class OccupyingV2ApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

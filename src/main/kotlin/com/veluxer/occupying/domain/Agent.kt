@@ -5,4 +5,3 @@ interface Agent {
     suspend fun search(filter: SearchFilter): List<Train>
     suspend fun reserve(loginToken: String, train: Train)
 }
-
