@@ -14,6 +14,7 @@ group = "com.veluxer"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_16
 val kotestVersion = "4.6.0"
+val kotestExtensionVersion = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -31,6 +32,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionVersion")
 }
 
 tasks.withType<KotlinCompile> {
