@@ -10,10 +10,6 @@ internal class KorailPropertiesTest(korailProperties: KorailProperties) : String
         korailProperties.host shouldBe "https://smart.letskorail.com"
     }
 
-    "contextPath 속성은 코레일 API의 context path를 반환한다." {
-        korailProperties.contextPath shouldBe "/classes/com.korail.mobile."
-    }
-
     "timeout 속성은 코레일 API의 타임아웃 설정값을 반환한다." {
         korailProperties.timeout shouldBe 2000L
     }

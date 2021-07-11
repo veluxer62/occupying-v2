@@ -1,5 +1,4 @@
 agent:
   korail:
     host: https://smart.letskorail.com
-    context-path: /classes/com.korail.mobile.
     timeout: 2000

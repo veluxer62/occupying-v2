@@ -7,6 +7,5 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties("agent.korail")
 data class KorailProperties(
     val host: String,
-    val contextPath: String,
     val timeout: Long,
 )
