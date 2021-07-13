@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import java.net.HttpCookie
+import java.util.Optional
 
 class Korail(private val client: WebClient) : Agent {
     override suspend fun login(id: String, pw: String): LoginResult {
@@ -45,12 +46,14 @@ data class KorailLoginResponseBody(
 
 data class KorailLoginResult(private val entity: ResponseEntity<KorailLoginResponseBody>) : LoginResult {
     private val body = entity.body
-    private val cookies = HttpCookie.parse(entity.headers["Set-Cookie"]?.joinToString(";").orEmpty())
+    private val cookies = entity.headers["Set-Cookie"]?.joinToString(";")?.let { HttpCookie.parse(it) }
     private val loginSuccessCode = "IRZ000001"
 
     override fun isSuccess(): Boolean = body?.code == loginSuccessCode
     override fun getMessage(): String = body?.message.orEmpty()
-    override fun getToken(): String = cookies.first { cookie -> cookie.name == "JSESSIONID" }.value
+    override fun getToken(): Optional<String> = Optional.ofNullable(
+        cookies?.first { cookie -> cookie.name == "JSESSIONID" }?.value
+    )
 }
 
 object KorailConstraint {
