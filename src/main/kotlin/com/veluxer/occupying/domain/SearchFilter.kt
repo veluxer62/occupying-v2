@@ -1,5 +1,7 @@
 package com.veluxer.occupying.domain
 
+import org.springframework.util.MultiValueMap
+
 interface SearchFilter {
-    fun <T> getFilter(): T
+    fun getFormData(): MultiValueMap<String, String>
 }
