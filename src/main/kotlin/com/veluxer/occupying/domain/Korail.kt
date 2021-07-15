@@ -58,4 +58,5 @@ data class KorailLoginResult(private val entity: ResponseEntity<KorailLoginRespo
 
 object KorailConstraint {
     const val LOGIN_PATH = "/classes/com.korail.mobile.login.Login"
+    const val SEARCH_PATH = "/classes/com.korail.mobile.seatMovie.ScheduleView"
 }
