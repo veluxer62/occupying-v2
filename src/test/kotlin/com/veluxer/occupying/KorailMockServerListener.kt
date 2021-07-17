@@ -9,10 +9,10 @@ import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_DATETIME
 import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.TestConstraint.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.TestConstraint.SUCCESS_LOGIN_PW
-import com.veluxer.occupying.domain.KorailConstraint.DATE_FORMAT
-import com.veluxer.occupying.domain.KorailConstraint.LOGIN_PATH
-import com.veluxer.occupying.domain.KorailConstraint.SEARCH_PATH
-import com.veluxer.occupying.domain.KorailConstraint.TIME_FORMAT
+import com.veluxer.occupying.domain.korail.KorailConstraint.DATE_FORMAT
+import com.veluxer.occupying.domain.korail.KorailConstraint.LOGIN_PATH
+import com.veluxer.occupying.domain.korail.KorailConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.korail.KorailConstraint.TIME_FORMAT
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import org.mockserver.client.MockServerClient

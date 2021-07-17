@@ -10,6 +10,8 @@ import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.TestConstraint.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.TestConstraint.SUCCESS_LOGIN_PW
 import com.veluxer.occupying.application.AppConfig
+import com.veluxer.occupying.domain.korail.Korail
+import com.veluxer.occupying.domain.korail.KorailSearchFilter
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.extensions.mockserver.MockServerListener
