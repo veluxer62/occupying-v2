@@ -16,6 +16,7 @@ import io.kotest.core.test.TestCase
 import org.mockserver.client.MockServerClient
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
+import java.net.URLEncoder
 import java.time.format.DateTimeFormatter
 
 internal class KorailMockServerListener : TestListener {
@@ -119,15 +120,15 @@ internal class KorailMockServerListener : TestListener {
                             "&radJobId=1" +
                             "&selGoTrain=00" +
                             "&txtPsgFlg_1=1" +
+                            "&txtMenuId=11" +
                             "&txtGoAbrdDt=${
                             SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
                             }" +
                             "&txtGoHour=${
                             SEARCH_DEPARTURE_DATETIME.toLocalTime().format(DateTimeFormatter.ofPattern("HHmmss"))
                             }" +
-                            "&txtGoStart=${SEARCH_DEPARTURE_STATION.label}" +
-                            "&txtGoEnd=${SEARCH_DESTINATION_STATION.label}" +
-                            "&txtMenuId=11"
+                            "&txtGoStart=${URLEncoder.encode(SEARCH_DEPARTURE_STATION.label, Charsets.UTF_8)}" +
+                            "&txtGoEnd=${URLEncoder.encode(SEARCH_DESTINATION_STATION.label, Charsets.UTF_8)}"
                     )
             )
             .respond(
@@ -312,6 +313,90 @@ internal class KorailMockServerListener : TestListener {
                                 "h_cnec_trfc_rcvd_prc": "00000000000000",
                                 "h_rsv_psb_flg": "Y",
                                 "h_rsv_psb_nm": "53,900원\n5%적립",
+                                "h_stn_sale_flg": "N",
+                                "h_stn_sale_txt": "자유석 또는 입석은\n역에서 구입할 수 있습니다.",
+                                "h_info_txt": "선택하신 열차는 다른 열차에 비해 정차역 수가 적어 가격이 최대 0.6% 높습니다.\n\n계속 진행하시겠습니까?",
+                                "h_trn_clsf_nm": "KTX",
+                                "h_trn_gp_nm": "KTX"
+                              },
+                              {
+                                "h_trn_seq": "002",
+                                "h_chg_trn_dv_cd": "1",
+                                "h_chg_trn_dv_nm": "직통",
+                                "h_chg_trn_seq": "1",
+                                "h_dpt_rs_stn_cd": "0001",
+                                "h_dpt_rs_stn_nm": "서울",
+                                "h_arv_rs_stn_cd": "0020",
+                                "h_arv_rs_stn_nm": "부산",
+                                "h_trn_no": "025",
+                                "h_trn_no_qb": "025",
+                                "h_yms_apl_flg": "Y",
+                                "h_trn_gp_cd": "100",
+                                "h_trn_clsf_cd": "00",
+                                "h_run_dt": "20210701",
+                                "h_dpt_dt": "20210701",
+                                "h_dpt_tm": "110000",
+                                "h_dpt_tm_qb": "11:00",
+                                "h_arv_dt": "20210701",
+                                "h_arv_tm": "134100",
+                                "h_arv_tm_qb": "13:41",
+                                "h_expct_dlay_hr": "000000",
+                                "h_rsv_wait_ps_cnt": "0278",
+                                "h_dtour_flg": "",
+                                "h_dtour_txt": "-",
+                                "h_std_rest_seat_cnt": "",
+                                "h_fst_rest_seat_cnt": "",
+                                "h_car_tp_cd": "",
+                                "h_car_tp_nm": "",
+                                "h_trn_cps_cd1": "X",
+                                "h_trn_cps_nm1": "전동휠체어석",
+                                "h_trn_cps_cd2": "",
+                                "h_trn_cps_nm2": "",
+                                "h_trn_cps_cd3": "",
+                                "h_trn_cps_nm3": "",
+                                "h_trn_cps_cd4": "",
+                                "h_trn_cps_nm4": "",
+                                "h_trn_cps_cd5": "",
+                                "h_trn_cps_nm5": "",
+                                "h_train_disc_rt": "",
+                                "h_wait_rsv_flg": "-1",
+                                "h_rd_cnd_disc_no": "",
+                                "h_rd_cnd_disc_nm": "",
+                                "h_spe_rsv_cd": "13",
+                                "h_spe_rsv_cd2": null,
+                                "h_spe_rsv_nm": "매진",
+                                "h_spe_disc_rt": "0",
+                                "h_spe_seat_map_flg": "",
+                                "h_spe_psrm_cl_nm": "특실",
+                                "h_gen_rsv_cd": "13",
+                                "h_gen_rsv_cd2": null,
+                                "h_gen_rsv_nm": "매진",
+                                "h_gen_disc_rt": "0",
+                                "h_gen_seat_map_flg": "",
+                                "h_gen_psrm_cl_nm": "일반실",
+                                "h_stnd_rsv_cd": "00",
+                                "h_stnd_rsv_nm": "-",
+                                "h_free_rsv_cd": "00",
+                                "h_free_rsv_nm": "-",
+                                "h_free_sracar_cnt": "000",
+                                "h_train_disc_gen_rt": "-005.00",
+                                "h_run_tm": "0241",
+                                "h_rd_add_info": "00",
+                                "h_nonstop_msg": "",
+                                "h_nonstop_msg_txt": "",
+                                "h_rd_seat_map_flg": "NN",
+                                "h_dpt_stn_cons_ordr": "000007",
+                                "h_arv_stn_cons_ordr": "000030",
+                                "h_dpt_stn_run_ordr": "000001",
+                                "h_arv_stn_run_ordr": "000008",
+                                "h_seat_att_cd": "",
+                                "h_rcvd_amt": "00000000059800",
+                                "h_rcvd_fare": "00000000023900",
+                                "h_cnec_trfc_psb_flg": "",
+                                "h_cnec_trfc_nd_hm": "",
+                                "h_cnec_trfc_rcvd_prc": "00000000000000",
+                                "h_rsv_psb_flg": "N",
+                                "h_rsv_psb_nm": "매진",
                                 "h_stn_sale_flg": "N",
                                 "h_stn_sale_txt": "자유석 또는 입석은\n역에서 구입할 수 있습니다.",
                                 "h_info_txt": "선택하신 열차는 다른 열차에 비해 정차역 수가 적어 가격이 최대 0.6% 높습니다.\n\n계속 진행하시겠습니까?",
