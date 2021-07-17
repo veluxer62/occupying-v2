@@ -9,15 +9,16 @@ import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_DATETIME
 import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.TestConstraint.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.TestConstraint.SUCCESS_LOGIN_PW
+import com.veluxer.occupying.domain.KorailConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.KorailConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.KorailConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.KorailConstraint.TIME_FORMAT
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import org.mockserver.client.MockServerClient
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
 import java.net.URLEncoder
-import java.time.format.DateTimeFormatter
 
 internal class KorailMockServerListener : TestListener {
     override suspend fun beforeTest(testCase: TestCase) {
@@ -121,12 +122,8 @@ internal class KorailMockServerListener : TestListener {
                             "&selGoTrain=00" +
                             "&txtPsgFlg_1=1" +
                             "&txtMenuId=11" +
-                            "&txtGoAbrdDt=${
-                            SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-                            }" +
-                            "&txtGoHour=${
-                            SEARCH_DEPARTURE_DATETIME.toLocalTime().format(DateTimeFormatter.ofPattern("HHmmss"))
-                            }" +
+                            "&txtGoAbrdDt=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&txtGoHour=${SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT)}" +
                             "&txtGoStart=${URLEncoder.encode(SEARCH_DEPARTURE_STATION.label, Charsets.UTF_8)}" +
                             "&txtGoEnd=${URLEncoder.encode(SEARCH_DESTINATION_STATION.label, Charsets.UTF_8)}"
                     )

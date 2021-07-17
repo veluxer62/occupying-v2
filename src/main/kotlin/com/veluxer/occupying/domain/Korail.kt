@@ -2,8 +2,10 @@ package com.veluxer.occupying.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.veluxer.occupying.domain.KorailConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.KorailConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.KorailConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.KorailConstraint.TIME_FORMAT
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
@@ -74,6 +76,8 @@ data class KorailLoginResult(private val entity: ResponseEntity<KorailLoginRespo
 object KorailConstraint {
     const val LOGIN_PATH = "/classes/com.korail.mobile.login.Login"
     const val SEARCH_PATH = "/classes/com.korail.mobile.seatMovie.ScheduleView"
+    val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+    val TIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("HHmmss")
 }
 
 data class KorailSearchFilter(
@@ -89,8 +93,8 @@ data class KorailSearchFilter(
         data.set("selGoTrain", "00")
         data.set("txtPsgFlg_1", "1")
         data.set("txtMenuId", "11")
-        data.set("txtGoAbrdDt", departureDateTime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-        data.set("txtGoHour", departureDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HHmmss")))
+        data.set("txtGoAbrdDt", departureDateTime.toLocalDate().format(DATE_FORMAT))
+        data.set("txtGoHour", departureDateTime.toLocalTime().format(TIME_FORMAT))
         data.set("txtGoStart", departureStation.label)
         data.set("txtGoEnd", destinationStation.label)
         return data
@@ -141,8 +145,8 @@ data class KorailTrain(
 
     override fun getDepartureDateTime(): ZonedDateTime = ZonedDateTime
         .of(
-            LocalDate.parse(departureDate, DateTimeFormatter.ofPattern("yyyyMMdd")),
-            LocalTime.parse(departureTime, DateTimeFormatter.ofPattern("HHmmdd")),
+            LocalDate.parse(departureDate, DATE_FORMAT),
+            LocalTime.parse(departureTime, TIME_FORMAT),
             ZoneId.of("Asia/Seoul")
         )
 
@@ -150,8 +154,8 @@ data class KorailTrain(
 
     override fun getArrivalDateTime(): ZonedDateTime = ZonedDateTime
         .of(
-            LocalDate.parse(arrivalDate, DateTimeFormatter.ofPattern("yyyyMMdd")),
-            LocalTime.parse(arrivalTime, DateTimeFormatter.ofPattern("HHmmdd")),
+            LocalDate.parse(arrivalDate, DATE_FORMAT),
+            LocalTime.parse(arrivalTime, TIME_FORMAT),
             ZoneId.of("Asia/Seoul")
         )
 
