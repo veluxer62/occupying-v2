@@ -61,9 +61,9 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
                 getTrainType() shouldBe TrainType.KTX
                 getSeatStatus() shouldBe SeatStatus.AVAILABLE
                 getFare() shouldBe 59800
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 0, 0, 0, ZoneId.systemDefault())
                 getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 9, 38, 0, 0, ZoneId.of("Asia/Seoul"))
+                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 9, 38, 0, 0, ZoneId.systemDefault())
                 getDestinationStation() shouldBe Station.BUSAN
             }
 
@@ -72,9 +72,9 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
                 getTrainType() shouldBe TrainType.KTX
                 getSeatStatus() shouldBe SeatStatus.AVAILABLE
                 getFare() shouldBe 53900
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 30, 0, 0, ZoneId.of("Asia/Seoul"))
+                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 30, 0, 0, ZoneId.systemDefault())
                 getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 10, 3, 0, 0, ZoneId.of("Asia/Seoul"))
+                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 10, 3, 0, 0, ZoneId.systemDefault())
                 getDestinationStation() shouldBe Station.BUSAN
             }
 
@@ -83,9 +83,9 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
                 getTrainType() shouldBe TrainType.KTX
                 getSeatStatus() shouldBe SeatStatus.SOLD_OUT
                 getFare() shouldBe 59800
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 11, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 11, 0, 0, 0, ZoneId.systemDefault())
                 getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 13, 41, 0, 0, ZoneId.of("Asia/Seoul"))
+                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 13, 41, 0, 0, ZoneId.systemDefault())
                 getDestinationStation() shouldBe Station.BUSAN
             }
         }

@@ -147,7 +147,7 @@ data class KorailTrain(
         .of(
             LocalDate.parse(departureDate, DATE_FORMAT),
             LocalTime.parse(departureTime, TIME_FORMAT),
-            ZoneId.of("Asia/Seoul")
+            ZoneId.systemDefault()
         )
 
     override fun getDepartureStation(): Station = Station.values().first { it.code == departureStation }
@@ -156,7 +156,7 @@ data class KorailTrain(
         .of(
             LocalDate.parse(arrivalDate, DATE_FORMAT),
             LocalTime.parse(arrivalTime, TIME_FORMAT),
-            ZoneId.of("Asia/Seoul")
+            ZoneId.systemDefault()
         )
 
     override fun getDestinationStation(): Station = Station.values().first { it.code == destinationStation }

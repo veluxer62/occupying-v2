@@ -10,10 +10,17 @@ import org.springframework.util.MimeType
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
+import java.util.TimeZone
+import javax.annotation.PostConstruct
 
 @Configuration
 @EnableConfigurationProperties(KorailProperties::class)
 class AppConfig {
+
+    @PostConstruct
+    fun init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
+    }
 
     @Bean
     fun korailClient(korailProperties: KorailProperties): WebClient {
