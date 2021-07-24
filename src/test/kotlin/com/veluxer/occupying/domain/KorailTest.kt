@@ -1,14 +1,14 @@
 package com.veluxer.occupying.domain
 
+import com.veluxer.occupying.Fixture.FAILURE_LOGIN_PW
+import com.veluxer.occupying.Fixture.JSESSIONID
+import com.veluxer.occupying.Fixture.LOGIN_ID
+import com.veluxer.occupying.Fixture.MOCK_SERVER_PORT
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_DATETIME
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
+import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
+import com.veluxer.occupying.Fixture.SUCCESS_LOGIN_PW
 import com.veluxer.occupying.KorailMockServerListener
-import com.veluxer.occupying.TestConstraint.FAILURE_LOGIN_PW
-import com.veluxer.occupying.TestConstraint.JSESSIONID
-import com.veluxer.occupying.TestConstraint.LOGIN_ID
-import com.veluxer.occupying.TestConstraint.MOCK_SERVER_PORT
-import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_DATETIME
-import com.veluxer.occupying.TestConstraint.SEARCH_DEPARTURE_STATION
-import com.veluxer.occupying.TestConstraint.SEARCH_DESTINATION_STATION
-import com.veluxer.occupying.TestConstraint.SUCCESS_LOGIN_PW
 import com.veluxer.occupying.application.AppConfig
 import com.veluxer.occupying.domain.korail.Korail
 import com.veluxer.occupying.domain.korail.KorailSearchFilter

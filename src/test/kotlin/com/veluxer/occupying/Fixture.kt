@@ -4,7 +4,7 @@ import com.veluxer.occupying.domain.Station
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-internal object TestConstraint {
+internal object Fixture {
     const val MOCK_SERVER_HOST = "localhost"
     const val MOCK_SERVER_PORT = 1080
     const val LOGIN_ID = "test-id"
