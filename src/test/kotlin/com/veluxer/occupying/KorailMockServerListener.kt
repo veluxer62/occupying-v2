@@ -10,6 +10,7 @@ import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.Fixture.SUCCESS_LOGIN_PW
 import com.veluxer.occupying.Fixture.TRAIN_NO
+import com.veluxer.occupying.domain.PassengerType
 import com.veluxer.occupying.domain.SeatType
 import com.veluxer.occupying.domain.TrainType
 import com.veluxer.occupying.domain.korail.KorailConstraint.DATE_FORMAT
@@ -39,7 +40,7 @@ internal class KorailMockServerListener : TestListener {
                     .withMethod("POST")
                     .withPath(RESERVATION_PATH)
                     .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
-                    .withHeader("cookie", "JSESSIONID=SfVoEw0FVnvT7KTtgaatXrV7x1xHR1zZmVmyFe5zk2apDFYrJ0ajNddjn0xFB3FO")
+                    .withHeader("cookie", "JSESSIONID=$JSESSIONID")
                     .withBody(
                         "Device=AD" +
                             "&txtSeatAttCd1=${SeatType.NORMAL.code}" +
@@ -57,9 +58,8 @@ internal class KorailMockServerListener : TestListener {
                             "&txtArvRsStnCd1=${SEARCH_DESTINATION_STATION.code}" +
                             "&txtTrnNo1=$TRAIN_NO" +
                             "&txtTrnClsfCd1=${TrainType.KTX.code}" +
-                            "&txtPsrmClCd1=1" +
                             "&txtTrnGpCd1=100" +
-                            "&txtPsgTpCd1=1" +
+                            "&txtPsgTpCd1=${PassengerType.ADULT_YOUTH.code}" +
                             "&txtDiscKndCd1=000" +
                             "&txtCompaCnt1=1"
                     )
