@@ -48,7 +48,7 @@ class Korail(private val client: WebClient) : Agent {
         val departureDateTime = train.getDepartureDateTime()
         return client.post()
             .uri(RESERVATION_PATH)
-            .header("cookie", "JSESSIONID=$loginToken")
+            .cookie("JSESSIONID", loginToken)
             .body(
                 BodyInserters
                     .fromFormData("Device", "AD")

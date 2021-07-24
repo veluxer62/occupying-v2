@@ -40,7 +40,7 @@ internal class KorailMockServerListener : TestListener {
                     .withMethod("POST")
                     .withPath(RESERVATION_PATH)
                     .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
-                    .withHeader("cookie", "JSESSIONID=$JSESSIONID")
+                    .withCookie("JSESSIONID", JSESSIONID)
                     .withBody(
                         "Device=AD" +
                             "&txtSeatAttCd1=${SeatType.NORMAL.code}" +
