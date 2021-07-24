@@ -1,3 +1,6 @@
 agent:
   korail:
     host: http://localhost:1080
+
+  srt:
+    host: http://localhost:1080
