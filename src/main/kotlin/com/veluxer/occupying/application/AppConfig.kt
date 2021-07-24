@@ -14,7 +14,7 @@ import java.util.TimeZone
 import javax.annotation.PostConstruct
 
 @Configuration
-@EnableConfigurationProperties(KorailProperties::class)
+@EnableConfigurationProperties(KorailProperties::class, SrtProperties::class)
 class AppConfig {
 
     @PostConstruct
