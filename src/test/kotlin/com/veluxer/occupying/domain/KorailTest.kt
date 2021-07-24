@@ -48,48 +48,46 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
         }
     }
 
-    context("열차 조회 함수는") {
-        expect("검색 필터를 입력하면 열차목록을 반환한다") {
-            val filter = KorailSearchFilter(
-                SEARCH_DEPARTURE_DATETIME,
-                SEARCH_DEPARTURE_STATION,
-                SEARCH_DESTINATION_STATION
-            )
+    expect("열차 조회 함수는 검색 필터를 입력하면 열차목록을 반환한다") {
+        val filter = KorailSearchFilter(
+            SEARCH_DEPARTURE_DATETIME,
+            SEARCH_DEPARTURE_STATION,
+            SEARCH_DESTINATION_STATION
+        )
 
-            val actual = sut.search(filter)
+        val actual = sut.search(filter)
 
-            assertSoftly(actual[0]) {
-                getNumber() shouldBe "009"
-                getTrainType() shouldBe TrainType.KTX
-                getSeatStatus() shouldBe SeatStatus.AVAILABLE
-                getFare() shouldBe 59800
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 0, 0, 0, ZoneId.systemDefault())
-                getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 9, 38, 0, 0, ZoneId.systemDefault())
-                getDestinationStation() shouldBe Station.BUSAN
-            }
+        assertSoftly(actual[0]) {
+            getNumber() shouldBe "009"
+            getTrainType() shouldBe TrainType.KTX
+            getSeatStatus() shouldBe SeatStatus.AVAILABLE
+            getFare() shouldBe 59800
+            getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 0, 0, 0, ZoneId.systemDefault())
+            getDepartureStation() shouldBe Station.SEOUL
+            getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 9, 38, 0, 0, ZoneId.systemDefault())
+            getDestinationStation() shouldBe Station.BUSAN
+        }
 
-            assertSoftly(actual[1]) {
-                getNumber() shouldBe "011"
-                getTrainType() shouldBe TrainType.KTX
-                getSeatStatus() shouldBe SeatStatus.AVAILABLE
-                getFare() shouldBe 53900
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 30, 0, 0, ZoneId.systemDefault())
-                getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 10, 3, 0, 0, ZoneId.systemDefault())
-                getDestinationStation() shouldBe Station.BUSAN
-            }
+        assertSoftly(actual[1]) {
+            getNumber() shouldBe "011"
+            getTrainType() shouldBe TrainType.KTX
+            getSeatStatus() shouldBe SeatStatus.AVAILABLE
+            getFare() shouldBe 53900
+            getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 7, 30, 0, 0, ZoneId.systemDefault())
+            getDepartureStation() shouldBe Station.SEOUL
+            getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 10, 3, 0, 0, ZoneId.systemDefault())
+            getDestinationStation() shouldBe Station.BUSAN
+        }
 
-            assertSoftly(actual[2]) {
-                getNumber() shouldBe "025"
-                getTrainType() shouldBe TrainType.KTX
-                getSeatStatus() shouldBe SeatStatus.SOLD_OUT
-                getFare() shouldBe 59800
-                getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 11, 0, 0, 0, ZoneId.systemDefault())
-                getDepartureStation() shouldBe Station.SEOUL
-                getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 13, 41, 0, 0, ZoneId.systemDefault())
-                getDestinationStation() shouldBe Station.BUSAN
-            }
+        assertSoftly(actual[2]) {
+            getNumber() shouldBe "025"
+            getTrainType() shouldBe TrainType.KTX
+            getSeatStatus() shouldBe SeatStatus.SOLD_OUT
+            getFare() shouldBe 59800
+            getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 11, 0, 0, 0, ZoneId.systemDefault())
+            getDepartureStation() shouldBe Station.SEOUL
+            getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 13, 41, 0, 0, ZoneId.systemDefault())
+            getDestinationStation() shouldBe Station.BUSAN
         }
     }
 })
