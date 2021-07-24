@@ -37,4 +37,16 @@ class AppConfig {
             }
             .build()
     }
+
+    @Bean
+    fun srtClient(srtProperties: SrtProperties): WebClient {
+        return WebClient.builder()
+            .baseUrl(srtProperties.host)
+            .clientConnector(
+                ReactorClientHttpConnector(
+                    HttpClient.create().responseTimeout(Duration.ofMillis(srtProperties.timeout))
+                )
+            )
+            .build()
+    }
 }
