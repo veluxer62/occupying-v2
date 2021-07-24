@@ -30,7 +30,7 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
 
     val sut = Korail(korailClient)
 
-    context("Korail 로그인 함수는") {
+    context("로그인 함수는") {
         expect("로그인 성공 시 성공응답을 반환한다") {
             val actual = sut.login(LOGIN_ID, SUCCESS_LOGIN_PW)
 
