@@ -31,6 +31,53 @@ internal class KorailMockServerListener : TestListener {
         loginFailure()
         searchTrains()
         reserveSuccess()
+        reserveFailure()
+    }
+
+    private fun reserveFailure() {
+        generateMockServerClient()
+            .`when`(
+                HttpRequest.request()
+                    .withMethod("POST")
+                    .withPath(RESERVATION_PATH)
+                    .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                    .withBody(
+                        "Device=AD" +
+                            "&txtSeatAttCd1=${SeatType.NORMAL.code}" +
+                            "&txtSeatAttCd2=000" +
+                            "&txtSeatAttCd3=000" +
+                            "&txtSeatAttCd4=015" +
+                            "&txtStndFlg=N" +
+                            "&txtJrnyCnt=1" +
+                            "&txtJrnySqno1=001" +
+                            "&txtJrnyTpCd1=11" +
+                            "&txtTotPsgCnt=1" +
+                            "&txtDptRsStnCd1=${SEARCH_DEPARTURE_STATION.code}" +
+                            "&txtDptDt1=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&txtDptTm1=${SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT)}" +
+                            "&txtArvRsStnCd1=${SEARCH_DESTINATION_STATION.code}" +
+                            "&txtTrnNo1=$TRAIN_NO" +
+                            "&txtTrnClsfCd1=${TrainType.KTX.code}" +
+                            "&txtTrnGpCd1=100" +
+                            "&txtPsgTpCd1=${PassengerType.ADULT_YOUTH.code}" +
+                            "&txtDiscKndCd1=000" +
+                            "&txtCompaCnt1=1"
+                    )
+            )
+            .respond(
+                HttpResponse.response()
+                    .withStatusCode(200)
+                    .withHeader("Content-Type", "text/plain;charset=utf-8")
+                    .withBody(
+                        """
+                            {
+                              "h_msg_txt": "로그아웃되었습니다. 다시 로그인하여 주십시오.",
+                              "h_msg_cd": "P058",
+                              "strResult": "FAIL"
+                            }
+                        """.trimIndent()
+                    )
+            )
     }
 
     private fun reserveSuccess() {

@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.UUID
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = [AppConfig::class])
@@ -99,6 +100,15 @@ class KorailTest(korailClient: WebClient) : ExpectSpec({
             assertSoftly(actual) {
                 isSuccess() shouldBe true
                 getMessage() shouldBe "결제하지 않으면 예약이 취소됩니다.\n\n1.승차권 반환수수료는 다음과 같습니다.\n\n- 출발당일 ~1시간전 : 400원\n- 1시간~출발시간전 : 10%\n* 열차출발시각 이후에는 역창구에서 반환하셔야 합니다.\n* 도착역 도착후에는 반환되지 않습니다.\n\n2. 레츠코레일에서 구입한 승차권을 역 창구에서 변경 시 할인이 취소될 수 있습니다.\n\n3. 할인 승차권의 할인율은 별도 공지없이 변경될 수 있습니다.\n\n4. 열차정보, 구입기간, 매수 금액, 주의사항 등을 최종 확인하였습니다.\n1. 스마트폰 승차권은 승차권을 발권한 스마트폰에서만 확인할 수 있습니다.\n\n2. 캡처 사진 등 정당한 승차권을 소지하지 않고 열차를 이용하는 경우, 부가운임을 징수합니다.\n※ 정당승차권에는 코레일 로고가 흐르고 있습니다."
+            }
+        }
+
+        expect("로그인 토큰이 유효하지 않는 경우 예약실패 응답을 반환한다") {
+            val actual = sut.reserve(UUID.randomUUID().toString(), RESERVATION_KORAIL_TRAIN)
+
+            assertSoftly(actual) {
+                isSuccess() shouldBe false
+                getMessage() shouldBe "로그아웃되었습니다. 다시 로그인하여 주십시오."
             }
         }
     }
