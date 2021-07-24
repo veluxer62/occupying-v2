@@ -2,3 +2,7 @@ agent:
   korail:
     host: https://smart.letskorail.com
     timeout: 2000
+
+  srt:
+    host: https://app.srail.or.kr
+    timeout: 2000
