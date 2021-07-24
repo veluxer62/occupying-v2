@@ -14,4 +14,5 @@ internal object TestConstraint {
     val SEARCH_DEPARTURE_DATETIME: ZonedDateTime = ZonedDateTime.of(2021, 7, 1, 7, 0, 0, 0, ZoneId.systemDefault())
     val SEARCH_DEPARTURE_STATION = Station.SEOUL
     val SEARCH_DESTINATION_STATION = Station.BUSAN
+    const val TRAIN_NO = "009"
 }
