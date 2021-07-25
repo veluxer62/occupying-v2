@@ -1,5 +1,6 @@
 package com.veluxer.occupying.domain
 
+import com.veluxer.occupying.Fixture
 import com.veluxer.occupying.Fixture.JSESSIONID
 import com.veluxer.occupying.Fixture.LOGIN_ID
 import com.veluxer.occupying.Fixture.MOCK_SERVER_PORT
@@ -28,6 +29,14 @@ internal class SrtTest(srtClient: WebClient) : ExpectSpec({
             actual.getMessage() shouldBe "정상적으로 조회 되었습니다."
             actual.isSuccess() shouldBe true
             actual.getToken().get() shouldBe JSESSIONID
+        }
+
+        expect("로그인 실패 시 실패응답을 반환한다") {
+            val actual = sut.login(LOGIN_ID, Fixture.FAILURE_LOGIN_PW)
+
+            actual.getMessage() shouldBe "비밀번호 오류입니다."
+            actual.isSuccess() shouldBe false
+            actual.getToken().isEmpty shouldBe true
         }
     }
 })

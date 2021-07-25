@@ -1,5 +1,6 @@
 package com.veluxer.occupying
 
+import com.veluxer.occupying.Fixture.FAILURE_LOGIN_PW
 import com.veluxer.occupying.Fixture.JSESSIONID
 import com.veluxer.occupying.Fixture.LOGIN_ID
 import com.veluxer.occupying.Fixture.MOCK_SERVER_HOST
@@ -15,6 +16,63 @@ import org.mockserver.model.HttpResponse
 internal class SrtMockServerListener : TestListener {
     override suspend fun beforeTest(testCase: TestCase) {
         loginSuccess()
+        loginFailure()
+    }
+
+    private fun loginFailure() {
+        generateMockServerClient()
+            .`when`(
+                HttpRequest.request()
+                    .withMethod("POST")
+                    .withPath(LOGIN_PATH)
+                    .withHeader(
+                        "User-Agent",
+                        "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
+                    )
+                    .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                    .withHeader("Accept", "application/json")
+                    .withBody("auto=Y&check=Y&srchDvCd=1&srchDvNm=$LOGIN_ID&hmpgPwdCphd=$FAILURE_LOGIN_PW")
+            )
+            .respond(
+                HttpResponse.response()
+                    .withStatusCode(200)
+                    .withHeader("Content-Type", "application/json;charset=UTF-8")
+                    .withBody(
+                        """
+                            {
+                              "MSG": "비밀번호 오류입니다.",
+                              "page": "menu",
+                              "userMap": {
+                                "USER_KEY": "",
+                                "USER_DV": null,
+                                "wctNo": "",
+                                "deviceKey": "-",
+                                "uuid": "",
+                                "strDeviceInfo": "",
+                                "deviceId": "-"
+                              },
+                              "commandMap": {
+                                "auto": "Y",
+                                "check": "Y",
+                                "page": "menu",
+                                "deviceKey": "-",
+                                "customerYn": "",
+                                "login_referer": "https://app.srail.or.kr/main/main.do",
+                                "srchDvCd": "1",
+                                "srchDvNm": "1234567890",
+                                "hmpgPwdCphd": "<비밀번호>",
+                                "login_idIdx": "1",
+                                "login_idVal": "1234567890",
+                                "login_check": "Y",
+                                "login_auto": "Y"
+                              },
+                              "strResult": "FAIL",
+                              "msgTxt": "입력값 오류",
+                              "RTNCD": "N"
+                            }
+                        """.trimIndent()
+                    )
+            )
     }
 
     private fun loginSuccess() {

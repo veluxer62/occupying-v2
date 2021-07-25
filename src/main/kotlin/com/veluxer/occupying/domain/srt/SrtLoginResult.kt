@@ -12,6 +12,6 @@ data class SrtLoginResult(private val entity: ResponseEntity<SrtLoginResponseBod
     override fun isSuccess(): Boolean = body?.code.isNullOrEmpty()
     override fun getMessage(): String = body?.message ?: "정상적으로 조회 되었습니다."
     override fun getToken(): Optional<String> = Optional.ofNullable(
-        cookies.first { it.name == "JSESSIONID_XEBEC" }.value
+        cookies.firstOrNull { it.name == "JSESSIONID_XEBEC" }?.value
     )
 }
