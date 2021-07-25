@@ -1,7 +1,5 @@
 package com.veluxer.occupying.domain.srt
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.veluxer.occupying.domain.Agent
 import com.veluxer.occupying.domain.LoginResult
 import com.veluxer.occupying.domain.Result
@@ -9,11 +7,8 @@ import com.veluxer.occupying.domain.SearchFilter
 import com.veluxer.occupying.domain.Train
 import com.veluxer.occupying.domain.srt.SrtConstraint.LOGIN_PATH
 import kotlinx.coroutines.reactor.awaitSingle
-import org.springframework.http.ResponseEntity
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
-import java.net.HttpCookie
-import java.util.Optional
 
 class Srt(private val client: WebClient) : Agent {
     override suspend fun login(id: String, pw: String): LoginResult {
@@ -45,23 +40,4 @@ class Srt(private val client: WebClient) : Agent {
     override suspend fun reserve(loginToken: String, train: Train): Result {
         TODO("Not yet implemented")
     }
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class SrtLoginResponseBody(
-    @JsonProperty("MSG")
-    val message: String?,
-    @JsonProperty("strResult")
-    val code: String?,
-)
-
-data class SrtLoginResult(private val entity: ResponseEntity<SrtLoginResponseBody>) : LoginResult {
-    private val body = entity.body
-    private val cookies = entity.headers["Set-Cookie"]?.flatMap { HttpCookie.parse(it) }.orEmpty()
-
-    override fun isSuccess(): Boolean = body?.code.isNullOrEmpty()
-    override fun getMessage(): String = body?.message ?: "정상적으로 조회 되었습니다."
-    override fun getToken(): Optional<String> = Optional.ofNullable(
-        cookies.first { it.name == "JSESSIONID_XEBEC" }.value
-    )
 }
