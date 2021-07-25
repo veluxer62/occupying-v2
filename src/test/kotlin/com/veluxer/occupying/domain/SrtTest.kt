@@ -4,16 +4,23 @@ import com.veluxer.occupying.Fixture
 import com.veluxer.occupying.Fixture.JSESSIONID
 import com.veluxer.occupying.Fixture.LOGIN_ID
 import com.veluxer.occupying.Fixture.MOCK_SERVER_PORT
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_DATETIME
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
+import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.Fixture.SUCCESS_LOGIN_PW
 import com.veluxer.occupying.SrtMockServerListener
 import com.veluxer.occupying.application.AppConfig
 import com.veluxer.occupying.domain.srt.Srt
+import com.veluxer.occupying.domain.srt.SrtSearchFilter
+import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.extensions.mockserver.MockServerListener
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = [AppConfig::class])
@@ -37,6 +44,38 @@ internal class SrtTest(srtClient: WebClient) : ExpectSpec({
             actual.getMessage() shouldBe "비밀번호 오류입니다."
             actual.isSuccess() shouldBe false
             actual.getToken().isEmpty shouldBe true
+        }
+    }
+
+    expect("열차 조회 함수는 검색 필터를 입력하면 열차목록을 반환한다") {
+        val filter = SrtSearchFilter(
+            SEARCH_DEPARTURE_DATETIME,
+            SEARCH_DEPARTURE_STATION,
+            SEARCH_DESTINATION_STATION
+        )
+
+        val actual = sut.search(filter)
+
+        assertSoftly(actual[0]) {
+            getNumber() shouldBe "301"
+            getTrainType() shouldBe TrainType.SRT
+            getSeatStatus() shouldBe SeatStatus.AVAILABLE
+            getFare() shouldBe 52900
+            getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 5, 30, 0, 0, ZoneId.systemDefault())
+            getDepartureStation() shouldBe Station.SUSEO
+            getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 8, 5, 0, 0, ZoneId.systemDefault())
+            getDestinationStation() shouldBe Station.BUSAN
+        }
+
+        assertSoftly(actual[1]) {
+            getNumber() shouldBe "349"
+            getTrainType() shouldBe TrainType.SRT
+            getSeatStatus() shouldBe SeatStatus.SOLD_OUT
+            getFare() shouldBe 52900
+            getDepartureDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 16, 21, 0, 0, ZoneId.systemDefault())
+            getDepartureStation() shouldBe Station.SUSEO
+            getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 18, 46, 0, 0, ZoneId.systemDefault())
+            getDestinationStation() shouldBe Station.BUSAN
         }
     }
 })

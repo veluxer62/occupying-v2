@@ -5,8 +5,13 @@ import com.veluxer.occupying.Fixture.JSESSIONID
 import com.veluxer.occupying.Fixture.LOGIN_ID
 import com.veluxer.occupying.Fixture.MOCK_SERVER_HOST
 import com.veluxer.occupying.Fixture.MOCK_SERVER_PORT
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_DATETIME
+import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
+import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.Fixture.SUCCESS_LOGIN_PW
+import com.veluxer.occupying.domain.korail.KorailConstraint
 import com.veluxer.occupying.domain.srt.SrtConstraint.LOGIN_PATH
+import com.veluxer.occupying.domain.srt.SrtConstraint.SEARCH_PATH
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import org.mockserver.client.MockServerClient
@@ -17,6 +22,296 @@ internal class SrtMockServerListener : TestListener {
     override suspend fun beforeTest(testCase: TestCase) {
         loginSuccess()
         loginFailure()
+        searchTrains()
+    }
+
+    private fun searchTrains() {
+        generateMockServerClient()
+            .`when`(
+                HttpRequest.request()
+                    .withMethod("POST")
+                    .withPath(SEARCH_PATH)
+                    .withHeader(
+                        "User-Agent",
+                        "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
+                    )
+                    .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                    .withHeader("Accept", "application/json")
+                    .withBody(
+                        "chtnDvCd=1" +
+                            "&seatAttCd=015" +
+                            "&psgNum=1" +
+                            "&trnGpCd=109" +
+                            "&stlbTrnClsfCd=05" +
+                            "&dptDt=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(KorailConstraint.DATE_FORMAT)}" +
+                            "&dptTm=${SEARCH_DEPARTURE_DATETIME.toLocalTime().format(KorailConstraint.TIME_FORMAT)}" +
+                            "&dptRsStnCd=${SEARCH_DEPARTURE_STATION.code}" +
+                            "&arvRsStnCd=${SEARCH_DESTINATION_STATION.code}"
+                    )
+            )
+            .respond(
+                HttpResponse.response()
+                    .withStatusCode(200)
+                    .withHeader("Content-Type", "application/json;charset=UTF-8")
+                    .withBody(
+                        """
+                            {
+                              "ErrorMsg": "",
+                              "ErrorCode": "0",
+                              "resultMap": [
+                                {
+                                  "msgCd": "IRG000000",
+                                  "seandYo": "N",
+                                  "wctNo": "81301",
+                                  "qryCnqeCnt": 10,
+                                  "strResult": "SUCC",
+                                  "msgTxt": "정상처리되었습니다",
+                                  "fllwPgExt2": null,
+                                  "fllwPgExt": "Y",
+                                  "uuid": "APP061314385800070920000000000000-",
+                                  "cgPsId": "korail"
+                                }
+                              ],
+                              "outDataSets": {
+                                "dsOutput1": [
+                                  {
+                                    "etcRsvPsbCdNm": "-",
+                                    "rcvdAmt": "00000000052900",
+                                    "sprmRsvPsbStr": "예약가능",
+                                    "trnOrdrNo": 0,
+                                    "gnrmRsvPsbStr": "예약가능",
+                                    "gnrmRsvPsbColor": "#8e1a3cff",
+                                    "runTm": "0235",
+                                    "sprmRsvPsbColor": "#8e1a3cff",
+                                    "arvTm": "080500",
+                                    "fresRsvPsbCdNm": null,
+                                    "runDt": "20210701",
+                                    "stlbDturDvCd": "",
+                                    "ocurDlayTnum": 0,
+                                    "seatAttCd": "015",
+                                    "rcvdFare": "00000000023800",
+                                    "arvStnConsOrdr": "000020",
+                                    "sprmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                    "rsvWaitPsbCdNm": "-",
+                                    "chtnDvCd": "1",
+                                    "rsvWaitPsbCd": "-2",
+                                    "seatSelect": "",
+                                    "dptStnRunOrdr": "000001",
+                                    "stlbTrnClsfCd": "17",
+                                    "trainDiscGenRt": "0000.00",
+                                    "dptTm": "053000",
+                                    "stmpRsvPsbFlgCd": "YY",
+                                    "trnNstpLeadInfo": "",
+                                    "arvDt": "20210701",
+                                    "gnrmRsvPsbCdNm": "예약하기/좌석선택",
+                                    "gnrmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                    "trnGpCd": "300",
+                                    "sprmRsvPsbCdNm": "예약하기/좌석선택",
+                                    "payTable": "",
+                                    "dptRsStnCd": "0551",
+                                    "ymsAplFlg": "Y",
+                                    "fresOprCno": 0,
+                                    "doReserv": "",
+                                    "timeTable": "",
+                                    "stndRsvPsbCdNm": "-",
+                                    "dptStnConsOrdr": "000001",
+                                    "arvRsStnCd": "0020",
+                                    "dptDt": "20210701",
+                                    "trnNo": "301",
+                                    "arvStnRunOrdr": "000008",
+                                    "trnCpsCd5": "",
+                                    "trnCpsCd3": "",
+                                    "trnCpsCd4": "",
+                                    "trnCpsCd1": "X",
+                                    "trnCpsCd2": ""
+                                  },
+                                  {
+                                    "etcRsvPsbCdNm": "-",
+                                    "rcvdAmt": "00000000052900",
+                                    "sprmRsvPsbStr": "매진",
+                                    "trnOrdrNo": 0,
+                                    "gnrmRsvPsbStr": "예약가능",
+                                    "gnrmRsvPsbColor": "#8e1a3cff",
+                                    "runTm": "0225",
+                                    "sprmRsvPsbColor": "#ffffffff",
+                                    "arvTm": "184600",
+                                    "fresRsvPsbCdNm": null,
+                                    "runDt": "20210725",
+                                    "stlbDturDvCd": "",
+                                    "ocurDlayTnum": 0,
+                                    "seatAttCd": "015",
+                                    "rcvdFare": "00000000023800",
+                                    "arvStnConsOrdr": "000020",
+                                    "sprmRsvPsbImg": "IMAGE::grd_WF_Soldout.png",
+                                    "rsvWaitPsbCdNm": "-",
+                                    "chtnDvCd": "1",
+                                    "rsvWaitPsbCd": "-1",
+                                    "seatSelect": "",
+                                    "dptStnRunOrdr": "000001",
+                                    "stlbTrnClsfCd": "17",
+                                    "trainDiscGenRt": "0000.00",
+                                    "dptTm": "162100",
+                                    "stmpRsvPsbFlgCd": "NN",
+                                    "trnNstpLeadInfo": "",
+                                    "arvDt": "20210701",
+                                    "gnrmRsvPsbCdNm": "예약하기",
+                                    "gnrmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                    "trnGpCd": "300",
+                                    "sprmRsvPsbCdNm": "좌석매진",
+                                    "payTable": "",
+                                    "dptRsStnCd": "0551",
+                                    "ymsAplFlg": "Y",
+                                    "fresOprCno": 0,
+                                    "doReserv": "",
+                                    "timeTable": "",
+                                    "stndRsvPsbCdNm": "-",
+                                    "dptStnConsOrdr": "000001",
+                                    "arvRsStnCd": "0020",
+                                    "dptDt": "20210701",
+                                    "trnNo": "349",
+                                    "arvStnRunOrdr": "000006",
+                                    "trnCpsCd5": "",
+                                    "trnCpsCd3": "",
+                                    "trnCpsCd4": "",
+                                    "trnCpsCd1": "X",
+                                    "trnCpsCd2": ""
+                                  }
+                                ],
+                                "dsOutput0": [
+                                  {
+                                    "msgCd": "IRG000000",
+                                    "seandYo": "N",
+                                    "wctNo": "81301",
+                                    "qryCnqeCnt": 10,
+                                    "strResult": "SUCC",
+                                    "msgTxt": "정상처리되었습니다",
+                                    "fllwPgExt2": null,
+                                    "fllwPgExt": "Y",
+                                    "uuid": "APP061314385800070920000000000000-",
+                                    "cgPsId": "korail"
+                                  }
+                                ]
+                              },
+                              "commandMap": {
+                                "chtnDvCd": "1",
+                                "arriveTime": "N",
+                                "seatAttCd": "015",
+                                "psgNum": "1",
+                                "trnGpCd": "109",
+                                "stlbTrnClsfCd": "05",
+                                "dptDt": "20210701",
+                                "dptTm": "000000",
+                                "arvRsStnCd": "0020",
+                                "dptRsStnCd": "0551"
+                              },
+                              "trainListMap": [
+                                {
+                                  "etcRsvPsbCdNm": "-",
+                                  "rcvdAmt": "00000000052900",
+                                  "sprmRsvPsbStr": "예약가능",
+                                  "trnOrdrNo": 0,
+                                  "gnrmRsvPsbStr": "예약가능",
+                                  "gnrmRsvPsbColor": "#8e1a3cff",
+                                  "runTm": "0235",
+                                  "sprmRsvPsbColor": "#8e1a3cff",
+                                  "arvTm": "080500",
+                                  "fresRsvPsbCdNm": null,
+                                  "runDt": "20210701",
+                                  "stlbDturDvCd": "",
+                                  "ocurDlayTnum": 0,
+                                  "seatAttCd": "015",
+                                  "rcvdFare": "00000000023800",
+                                  "arvStnConsOrdr": "000020",
+                                  "sprmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                  "rsvWaitPsbCdNm": "-",
+                                  "chtnDvCd": "1",
+                                  "rsvWaitPsbCd": "-2",
+                                  "seatSelect": "",
+                                  "dptStnRunOrdr": "000001",
+                                  "stlbTrnClsfCd": "17",
+                                  "trainDiscGenRt": "0000.00",
+                                  "dptTm": "053000",
+                                  "stmpRsvPsbFlgCd": "YY",
+                                  "trnNstpLeadInfo": "",
+                                  "arvDt": "20210701",
+                                  "gnrmRsvPsbCdNm": "예약하기/좌석선택",
+                                  "gnrmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                  "trnGpCd": "300",
+                                  "sprmRsvPsbCdNm": "예약하기/좌석선택",
+                                  "payTable": "",
+                                  "dptRsStnCd": "0551",
+                                  "ymsAplFlg": "Y",
+                                  "fresOprCno": 0,
+                                  "doReserv": "",
+                                  "timeTable": "",
+                                  "stndRsvPsbCdNm": "-",
+                                  "dptStnConsOrdr": "000001",
+                                  "arvRsStnCd": "0020",
+                                  "dptDt": "20210701",
+                                  "trnNo": "301",
+                                  "arvStnRunOrdr": "000008",
+                                  "trnCpsCd5": "",
+                                  "trnCpsCd3": "",
+                                  "trnCpsCd4": "",
+                                  "trnCpsCd1": "X",
+                                  "trnCpsCd2": ""
+                                },
+                                {
+                                  "etcRsvPsbCdNm": "-",
+                                  "rcvdAmt": "00000000052900",
+                                  "sprmRsvPsbStr": "매진",
+                                  "trnOrdrNo": 0,
+                                  "gnrmRsvPsbStr": "예약가능",
+                                  "gnrmRsvPsbColor": "#8e1a3cff",
+                                  "runTm": "0225",
+                                  "sprmRsvPsbColor": "#ffffffff",
+                                  "arvTm": "184600",
+                                  "fresRsvPsbCdNm": null,
+                                  "runDt": "20210701",
+                                  "stlbDturDvCd": "",
+                                  "ocurDlayTnum": 0,
+                                  "seatAttCd": "015",
+                                  "rcvdFare": "00000000023800",
+                                  "arvStnConsOrdr": "000020",
+                                  "sprmRsvPsbImg": "IMAGE::grd_WF_Soldout.png",
+                                  "rsvWaitPsbCdNm": "-",
+                                  "chtnDvCd": "1",
+                                  "rsvWaitPsbCd": "-1",
+                                  "seatSelect": "",
+                                  "dptStnRunOrdr": "000001",
+                                  "stlbTrnClsfCd": "17",
+                                  "trainDiscGenRt": "0000.00",
+                                  "dptTm": "162100",
+                                  "stmpRsvPsbFlgCd": "NN",
+                                  "trnNstpLeadInfo": "",
+                                  "arvDt": "20210701",
+                                  "gnrmRsvPsbCdNm": "예약하기",
+                                  "gnrmRsvPsbImg": "IMAGE::grd_WF_Ok01.png",
+                                  "trnGpCd": "300",
+                                  "sprmRsvPsbCdNm": "좌석매진",
+                                  "payTable": "",
+                                  "dptRsStnCd": "0551",
+                                  "ymsAplFlg": "Y",
+                                  "fresOprCno": 0,
+                                  "doReserv": "",
+                                  "timeTable": "",
+                                  "stndRsvPsbCdNm": "-",
+                                  "dptStnConsOrdr": "000001",
+                                  "arvRsStnCd": "0020",
+                                  "dptDt": "20210701",
+                                  "trnNo": "349",
+                                  "arvStnRunOrdr": "000006",
+                                  "trnCpsCd5": "",
+                                  "trnCpsCd3": "",
+                                  "trnCpsCd4": "",
+                                  "trnCpsCd1": "X",
+                                  "trnCpsCd2": ""
+                                }
+                              ]
+                            }
+                        """.trimIndent()
+                    )
+            )
     }
 
     private fun loginFailure() {
