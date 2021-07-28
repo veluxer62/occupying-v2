@@ -11,6 +11,8 @@ import com.veluxer.occupying.domain.srt.SrtConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.SEARCH_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.TIME_FORMAT
 import kotlinx.coroutines.reactor.awaitSingle
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
@@ -19,11 +21,7 @@ class Srt(private val client: WebClient) : Agent {
     override suspend fun login(id: String, pw: String): LoginResult {
         return client.post()
             .uri(LOGIN_PATH)
-            .header(
-                "User-Agent",
-                "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
-            )
-            .header("Accept", "application/json")
+            .headers(setDefaultHeader())
             .body(
                 BodyInserters
                     .fromFormData("auto", "Y")
@@ -41,11 +39,7 @@ class Srt(private val client: WebClient) : Agent {
     override suspend fun search(filter: SearchFilter): List<Train> {
         return client.post()
             .uri(SEARCH_PATH)
-            .header(
-                "User-Agent",
-                "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
-            )
-            .header("Accept", "application/json")
+            .headers(setDefaultHeader())
             .body(BodyInserters.fromFormData(filter.getFormData()))
             .retrieve()
             .awaitBody<SrtSearchResponseBody>()
@@ -55,11 +49,7 @@ class Srt(private val client: WebClient) : Agent {
     override suspend fun reserve(loginToken: String, train: Train): Result {
         return client.post()
             .uri(RESERVATION_PATH)
-            .header(
-                "User-Agent",
-                "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
-            )
-            .header("Accept", "application/json")
+            .headers(setDefaultHeader())
             .cookie("JSESSIONID_XEBEC", loginToken)
             .body(
                 BodyInserters
@@ -90,5 +80,13 @@ class Srt(private val client: WebClient) : Agent {
             )
             .retrieve()
             .awaitBody<SrtReservationResult>()
+    }
+
+    private fun setDefaultHeader(): (t: HttpHeaders) -> Unit = {
+        it.accept = listOf(MediaType.APPLICATION_JSON)
+        it.set(
+            HttpHeaders.USER_AGENT,
+            "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
+        )
     }
 }
