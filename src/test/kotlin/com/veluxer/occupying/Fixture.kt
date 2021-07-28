@@ -1,5 +1,6 @@
 package com.veluxer.occupying
 
+import com.veluxer.occupying.domain.LoginResult
 import com.veluxer.occupying.domain.SeatStatus
 import com.veluxer.occupying.domain.Station
 import com.veluxer.occupying.domain.TrainType
@@ -9,6 +10,7 @@ import com.veluxer.occupying.domain.korail.KorailTrain
 import com.veluxer.occupying.domain.srt.SrtTrain
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Optional
 
 internal object Fixture {
     const val MOCK_SERVER_HOST = "localhost"
@@ -45,4 +47,14 @@ internal object Fixture {
         arrivalTime = "093800",
         destinationStation = SEARCH_DESTINATION_STATION.code
     )
+    val SUCCESS_LOGIN_RESULT = object : LoginResult {
+        override fun getToken(): Optional<String> = Optional.of(JSESSIONID)
+        override fun isSuccess(): Boolean = true
+        override fun getMessage(): String = "정상적으로 조회 되었습니다."
+    }
+    val FAILURE_LOGIN_RESULT = object : LoginResult {
+        override fun getToken(): Optional<String> = Optional.empty()
+        override fun isSuccess() = false
+        override fun getMessage() = "로그인 정보를 다시 확인하세요."
+    }
 }
