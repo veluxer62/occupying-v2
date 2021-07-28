@@ -16,6 +16,7 @@ java.sourceCompatibility = JavaVersion.VERSION_16
 val kotestVersion = "4.6.1"
 val kotestExtensionSpringVersion = "1.0.0"
 val kotestExtensionMockServerVersion = "1.0.0"
+val mockkVersion = "1.12.0"
 
 repositories {
     mavenCentral()
@@ -35,6 +36,7 @@ dependencies {
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtensionSpringVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-mockserver:$kotestExtensionMockServerVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 tasks.withType<KotlinCompile> {
