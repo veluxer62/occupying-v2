@@ -13,7 +13,7 @@ plugins {
 group = "com.veluxer"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_16
-val kotestVersion = "4.6.0"
+val kotestVersion = "4.6.1"
 val kotestExtensionSpringVersion = "1.0.0"
 val kotestExtensionMockServerVersion = "1.0.0"
 
