@@ -22,14 +22,7 @@ class Srt(private val client: WebClient) : Agent {
         return client.post()
             .uri(LOGIN_PATH)
             .headers(setDefaultHeader())
-            .body(
-                BodyInserters
-                    .fromFormData("auto", "Y")
-                    .with("check", "Y")
-                    .with("srchDvCd", "1")
-                    .with("srchDvNm", id)
-                    .with("hmpgPwdCphd", pw)
-            )
+            .body(generateLoginRequestBody(id, pw))
             .retrieve()
             .toEntity(SrtLoginResponseBody::class.java)
             .map { SrtLoginResult(it) }
@@ -81,6 +74,16 @@ class Srt(private val client: WebClient) : Agent {
             .retrieve()
             .awaitBody<SrtReservationResult>()
     }
+
+    private fun generateLoginRequestBody(
+        id: String,
+        pw: String,
+    ) = BodyInserters
+        .fromFormData("auto", "Y")
+        .with("check", "Y")
+        .with("srchDvCd", "1")
+        .with("srchDvNm", id)
+        .with("hmpgPwdCphd", pw)
 
     private fun setDefaultHeader(): (t: HttpHeaders) -> Unit = {
         it.accept = listOf(MediaType.APPLICATION_JSON)
