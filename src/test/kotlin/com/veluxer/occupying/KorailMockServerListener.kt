@@ -17,6 +17,7 @@ import com.veluxer.occupying.domain.korail.KorailConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.korail.KorailConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.korail.KorailConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.korail.KorailConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.korail.KorailConstraint.SESSION_COOKIE_NAME
 import com.veluxer.occupying.domain.korail.KorailConstraint.TIME_FORMAT
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
@@ -87,7 +88,7 @@ internal class KorailMockServerListener : TestListener {
                     .withMethod("POST")
                     .withPath(RESERVATION_PATH)
                     .withHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
-                    .withCookie("JSESSIONID", JSESSIONID)
+                    .withCookie(SESSION_COOKIE_NAME, JSESSIONID)
                     .withBody(
                         "Device=AD" +
                             "&txtSeatAttCd1=${SeatType.NORMAL.code}" +

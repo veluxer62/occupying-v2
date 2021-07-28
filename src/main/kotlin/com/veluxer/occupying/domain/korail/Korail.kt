@@ -11,6 +11,7 @@ import com.veluxer.occupying.domain.korail.KorailConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.korail.KorailConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.korail.KorailConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.korail.KorailConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.korail.KorailConstraint.SESSION_COOKIE_NAME
 import com.veluxer.occupying.domain.korail.KorailConstraint.TIME_FORMAT
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.web.reactive.function.BodyInserters
@@ -41,7 +42,7 @@ class Korail(private val client: WebClient) : Agent {
     override suspend fun reserve(loginToken: String, train: Train): Result {
         return client.post()
             .uri(RESERVATION_PATH)
-            .cookie("JSESSIONID", loginToken)
+            .cookie(SESSION_COOKIE_NAME, loginToken)
             .body(generateReservationRequestBody(train))
             .retrieve()
             .awaitBody<KorailReservationResult>()

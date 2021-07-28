@@ -16,6 +16,7 @@ import com.veluxer.occupying.domain.srt.SrtConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.srt.SrtConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.srt.SrtConstraint.SESSION_COOKIE_NAME
 import com.veluxer.occupying.domain.srt.SrtConstraint.TIME_FORMAT
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
@@ -132,7 +133,7 @@ internal class SrtMockServerListener : TestListener {
                         "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
                     )
                     .withHeader("Accept", "application/json")
-                    .withCookie("JSESSIONID_XEBEC", JSESSIONID)
+                    .withCookie(SESSION_COOKIE_NAME, JSESSIONID)
                     .withBody(
                         "reserveType=11" +
                             "&jobId=1101" +

@@ -9,6 +9,7 @@ import com.veluxer.occupying.domain.srt.SrtConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.srt.SrtConstraint.LOGIN_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.srt.SrtConstraint.SESSION_COOKIE_NAME
 import com.veluxer.occupying.domain.srt.SrtConstraint.TIME_FORMAT
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.http.HttpHeaders
@@ -43,7 +44,7 @@ class Srt(private val client: WebClient) : Agent {
         return client.post()
             .uri(RESERVATION_PATH)
             .headers(setDefaultHeader())
-            .cookie("JSESSIONID_XEBEC", loginToken)
+            .cookie(SESSION_COOKIE_NAME, loginToken)
             .body(generateReservationRequestBody(train))
             .retrieve()
             .awaitBody<SrtReservationResult>()

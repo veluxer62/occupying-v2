@@ -8,4 +8,5 @@ object SrtConstraint {
     const val RESERVATION_PATH = "/arc/selectListArc05013_n.do"
     val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
     val TIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("HHmmss")
+    const val SESSION_COOKIE_NAME = "JSESSIONID_XEBEC"
 }
