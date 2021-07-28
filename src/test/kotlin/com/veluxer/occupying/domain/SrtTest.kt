@@ -4,6 +4,7 @@ import com.veluxer.occupying.Fixture
 import com.veluxer.occupying.Fixture.JSESSIONID
 import com.veluxer.occupying.Fixture.LOGIN_ID
 import com.veluxer.occupying.Fixture.MOCK_SERVER_PORT
+import com.veluxer.occupying.Fixture.RESERVATION_SRT_TRAIN
 import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_DATETIME
 import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
@@ -76,6 +77,17 @@ internal class SrtTest(srtClient: WebClient) : ExpectSpec({
             getDepartureStation() shouldBe Station.SUSEO
             getArrivalDateTime() shouldBe ZonedDateTime.of(2021, 7, 1, 18, 46, 0, 0, ZoneId.systemDefault())
             getDestinationStation() shouldBe Station.BUSAN
+        }
+    }
+
+    context("예약 함수는") {
+        expect("로그인 토큰과 열차정보가 주어지면 예약성공 응답을 반환한다") {
+            val actual = sut.reserve(JSESSIONID, RESERVATION_SRT_TRAIN)
+
+            assertSoftly(actual) {
+                isSuccess() shouldBe true
+                getMessage() shouldBe "결제하지 않으면 예약이 취소됩니다."
+            }
         }
     }
 })

@@ -9,9 +9,14 @@ import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_DATETIME
 import com.veluxer.occupying.Fixture.SEARCH_DEPARTURE_STATION
 import com.veluxer.occupying.Fixture.SEARCH_DESTINATION_STATION
 import com.veluxer.occupying.Fixture.SUCCESS_LOGIN_PW
+import com.veluxer.occupying.Fixture.TRAIN_NO
+import com.veluxer.occupying.domain.TrainType.SRT
 import com.veluxer.occupying.domain.korail.KorailConstraint
+import com.veluxer.occupying.domain.srt.SrtConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.srt.SrtConstraint.LOGIN_PATH
+import com.veluxer.occupying.domain.srt.SrtConstraint.RESERVATION_PATH
 import com.veluxer.occupying.domain.srt.SrtConstraint.SEARCH_PATH
+import com.veluxer.occupying.domain.srt.SrtConstraint.TIME_FORMAT
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import org.mockserver.client.MockServerClient
@@ -23,6 +28,141 @@ internal class SrtMockServerListener : TestListener {
         loginSuccess()
         loginFailure()
         searchTrains()
+        reserveSuccess()
+    }
+
+    private fun reserveSuccess() {
+        generateMockServerClient()
+            .`when`(
+                HttpRequest.request()
+                    .withMethod("POST")
+                    .withPath(RESERVATION_PATH)
+                    .withHeader(
+                        "User-Agent",
+                        "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
+                    )
+                    .withHeader("Accept", "application/json")
+                    .withCookie("JSESSIONID_XEBEC", JSESSIONID)
+                    .withBody(
+                        "reserveType=11" +
+                            "&jobId=1101" +
+                            "&jrnyCnt=1" +
+                            "&jrnyTpCd=11" +
+                            "&jrnySqno1=001" +
+                            "&stndFlg=N" +
+                            "&trnGpCd1=300" +
+                            "&totPrnb=1" +
+                            "&psgGridcnt=1" +
+                            "&psgTpCd1=1" +
+                            "&psgInfoPerPrnb1=1" +
+                            "&locSeatAttCd1=000" +
+                            "&rqSeatAttCd1=015" +
+                            "&dirSeatAttCd1=009" +
+                            "&smkSeatAttCd1=000" +
+                            "&etcSeatAttCd1=000" +
+                            "&psrmClCd1=1" +
+                            "&stlbTrnClsfCd1=${SRT.code}" +
+                            "&trnNo1=00$TRAIN_NO" +
+                            "&dptDt1=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&dptTm1=${SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT)}" +
+                            "&runDt1=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&dptRsStnCd1=${SEARCH_DEPARTURE_STATION.code}" +
+                            "&arvRsStnCd1=${SEARCH_DESTINATION_STATION.code}"
+                    )
+            )
+            .respond(
+                HttpResponse.response()
+                    .withStatusCode(200)
+                    .withHeader("Content-Type", "application/json;charset=UTF-8")
+                    .withBody(
+                        """
+                            {
+                              "payListMap": [],
+                              "reservListMap": [
+                                {
+                                  "proyStlTgtFlg": "Y",
+                                  "totSeatNum": 1,
+                                  "stlbTrnClsfCd": "17",
+                                  "jrnyTpCd": "11",
+                                  "lumpStlTgtNo": "20210613002217096509",
+                                  "dptTm": "053000",
+                                  "arvRsStnCd": "0020",
+                                  "JRNYLIST_KEY": 0,
+                                  "pnrNo": "320210648921056",
+                                  "dptDt": "20210701",
+                                  "trnNo": "301",
+                                  "arvDt": "20210701",
+                                  "dlayAcptFlg": "N",
+                                  "trnGpCd": "300",
+                                  "arvTm": "080500",
+                                  "dptRsStnCd": "0551"
+                                }
+                              ],
+                              "resultMap": [
+                                {
+                                  "tmpJobSqno1": 44935,
+                                  "tmpJobSqno2": 0,
+                                  "msgCd": "IRR000018",
+                                  "sprmFare": 0,
+                                  "totRcvdAmt": 51800,
+                                  "jrnyCnt": 1,
+                                  "wctNo": "81301",
+                                  "alertMsg": "",
+                                  "strResult": "SUCC",
+                                  "msgTxt": "결제하지 않으면 예약이 취소됩니다.",
+                                  "uuid": "APP061316101100006210000000000000-",
+                                  "cgPsId": "korail"
+                                }
+                              ],
+                              "commandMap": {
+                                "reserveType": "11",
+                                "jobId": "1101",
+                                "jrnyCnt": "1",
+                                "jrnyTpCd": "11",
+                                "jrnySqno1": "001",
+                                "stndFlg": "N",
+                                "trnGpCd1": "300",
+                                "stlbTrnClsfCd1": "17",
+                                "dptDt1": "20210701",
+                                "dptTm1": "053000",
+                                "runDt1": "20210701",
+                                "trnNo1": "00301",
+                                "dptRsStnCd1": "0551",
+                                "dptRsStnCdNm1": "수서",
+                                "arvRsStnCd1": "0020",
+                                "arvRsStnCdNm1": "부산",
+                                "totPrnb": "1",
+                                "psgGridcnt": "1",
+                                "psgTpCd1": "1",
+                                "psgInfoPerPrnb1": "1",
+                                "locSeatAttCd1": "000",
+                                "rqSeatAttCd1": "015",
+                                "dirSeatAttCd1": "009",
+                                "smkSeatAttCd1": "000",
+                                "etcSeatAttCd1": "000",
+                                "psrmClCd1": "1"
+                              },
+                              "trainListMap": [
+                                {
+                                  "rcvdAmt": 51800,
+                                  "scarNo": 2,
+                                  "seatPrc": 52900,
+                                  "psrmClCd": "1",
+                                  "rqSeatAttCd": "015",
+                                  "JRNYLIST_KEY": 0,
+                                  "psgTpCd": "1",
+                                  "SEATLIST_KEY": 0,
+                                  "seatNo": "10A",
+                                  "psgTpDvCd": "1",
+                                  "dcntKndCd": "",
+                                  "dcntAmt": 1100,
+                                  "seatFare": 0
+                                }
+                              ]
+                            }
+                        """.trimIndent()
+                    )
+            )
     }
 
     private fun searchTrains() {

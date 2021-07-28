@@ -6,6 +6,7 @@ import com.veluxer.occupying.domain.TrainType
 import com.veluxer.occupying.domain.korail.KorailConstraint.DATE_FORMAT
 import com.veluxer.occupying.domain.korail.KorailConstraint.TIME_FORMAT
 import com.veluxer.occupying.domain.korail.KorailTrain
+import com.veluxer.occupying.domain.srt.SrtTrain
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -25,6 +26,18 @@ internal object Fixture {
         trainType = TrainType.KTX.code,
         seatStatus = SeatStatus.AVAILABLE.code.first(),
         fare = "00000000059800",
+        departureDate = SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT),
+        departureTime = SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT),
+        departureStation = SEARCH_DEPARTURE_STATION.code,
+        arrivalDate = SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT),
+        arrivalTime = "093800",
+        destinationStation = SEARCH_DESTINATION_STATION.code
+    )
+    val RESERVATION_SRT_TRAIN = SrtTrain(
+        number = TRAIN_NO,
+        trainType = TrainType.SRT.code,
+        seatStatus = SeatStatus.AVAILABLE.code.first(),
+        fare = "00000000052900",
         departureDate = SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT),
         departureTime = SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT),
         departureStation = SEARCH_DEPARTURE_STATION.code,
