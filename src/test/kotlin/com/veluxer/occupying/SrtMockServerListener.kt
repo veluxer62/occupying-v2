@@ -29,6 +29,96 @@ internal class SrtMockServerListener : TestListener {
         loginFailure()
         searchTrains()
         reserveSuccess()
+        reserveFailure()
+    }
+
+    private fun reserveFailure() {
+        generateMockServerClient()
+            .`when`(
+                HttpRequest.request()
+                    .withMethod("POST")
+                    .withPath(RESERVATION_PATH)
+                    .withHeader(
+                        "User-Agent",
+                        "Mozilla/5.0 (Linux; Android 5.1.1; LGM-V300K Build/N2G47H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36SRT-APP-Android V.1.0.6"
+                    )
+                    .withHeader("Accept", "application/json")
+                    .withBody(
+                        "reserveType=11" +
+                            "&jobId=1101" +
+                            "&jrnyCnt=1" +
+                            "&jrnyTpCd=11" +
+                            "&jrnySqno1=001" +
+                            "&stndFlg=N" +
+                            "&trnGpCd1=300" +
+                            "&totPrnb=1" +
+                            "&psgGridcnt=1" +
+                            "&psgTpCd1=1" +
+                            "&psgInfoPerPrnb1=1" +
+                            "&locSeatAttCd1=000" +
+                            "&rqSeatAttCd1=015" +
+                            "&dirSeatAttCd1=009" +
+                            "&smkSeatAttCd1=000" +
+                            "&etcSeatAttCd1=000" +
+                            "&psrmClCd1=1" +
+                            "&stlbTrnClsfCd1=${SRT.code}" +
+                            "&trnNo1=00$TRAIN_NO" +
+                            "&dptDt1=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&dptTm1=${SEARCH_DEPARTURE_DATETIME.toLocalTime().format(TIME_FORMAT)}" +
+                            "&runDt1=${SEARCH_DEPARTURE_DATETIME.toLocalDate().format(DATE_FORMAT)}" +
+                            "&dptRsStnCd1=${SEARCH_DEPARTURE_STATION.code}" +
+                            "&arvRsStnCd1=${SEARCH_DESTINATION_STATION.code}"
+                    )
+            )
+            .respond(
+                HttpResponse.response()
+                    .withStatusCode(200)
+                    .withHeader("Content-Type", "application/json;charset=UTF-8")
+                    .withBody(
+                        """
+                            {
+                              "payListMap": null,
+                              "reservListMap": null,
+                              "resultMap": [
+                                {
+                                  "msgCd": "S111",
+                                  "strResult": "FAIL",
+                                  "msgTxt": "로그인 후 사용하십시요."
+                                }
+                              ],
+                              "commandMap": {
+                                "reserveType": "11",
+                                "jobId": "1101",
+                                "jrnyCnt": "1",
+                                "jrnyTpCd": "11",
+                                "jrnySqno1": "001",
+                                "stndFlg": "N",
+                                "trnGpCd1": "300",
+                                "stlbTrnClsfCd1": "17",
+                                "dptDt1": "20210730",
+                                "dptTm1": "053000",
+                                "runDt1": "20210730",
+                                "trnNo1": "00301",
+                                "dptRsStnCd1": "0551",
+                                "dptRsStnCdNm1": "수서",
+                                "arvRsStnCd1": "0020",
+                                "arvRsStnCdNm1": "부산",
+                                "totPrnb": "1",
+                                "psgGridcnt": "1",
+                                "psgTpCd1": "1",
+                                "psgInfoPerPrnb1": "1",
+                                "locSeatAttCd1": "000",
+                                "rqSeatAttCd1": "015",
+                                "dirSeatAttCd1": "009",
+                                "smkSeatAttCd1": "000",
+                                "etcSeatAttCd1": "000",
+                                "psrmClCd1": "1"
+                              },
+                              "trainListMap": null
+                            }
+                        """.trimIndent()
+                    )
+            )
     }
 
     private fun reserveSuccess() {

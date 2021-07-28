@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.UUID
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = [AppConfig::class])
@@ -87,6 +88,15 @@ internal class SrtTest(srtClient: WebClient) : ExpectSpec({
             assertSoftly(actual) {
                 isSuccess() shouldBe true
                 getMessage() shouldBe "결제하지 않으면 예약이 취소됩니다."
+            }
+        }
+
+        expect("로그인 토큰이 유효하지 않는 경우 예약실패 응답을 반환한다") {
+            val actual = sut.reserve(UUID.randomUUID().toString(), RESERVATION_SRT_TRAIN)
+
+            assertSoftly(actual) {
+                isSuccess() shouldBe false
+                getMessage() shouldBe "로그인 후 사용하십시요."
             }
         }
     }
