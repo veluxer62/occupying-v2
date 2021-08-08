@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.json.Jackson2JsonDecoder
-import org.springframework.util.MimeType
+import org.springframework.util.MimeTypeUtils
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
@@ -33,7 +33,7 @@ class AppConfig {
             )
             .codecs {
                 it.defaultCodecs()
-                    .jackson2JsonDecoder(Jackson2JsonDecoder(jacksonObjectMapper(), MimeType.valueOf("text/plain")))
+                    .jackson2JsonDecoder(Jackson2JsonDecoder(jacksonObjectMapper(), MimeTypeUtils.TEXT_PLAIN))
             }
             .build()
     }
