@@ -1,6 +1,9 @@
 package com.veluxer.occupying.application
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.veluxer.occupying.domain.Agent
+import com.veluxer.occupying.domain.korail.Korail
+import com.veluxer.occupying.domain.srt.Srt
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -49,4 +52,13 @@ class AppConfig {
             )
             .build()
     }
+
+    @Bean
+    fun korail(korailClient: WebClient): Agent = Korail(korailClient)
+
+    @Bean
+    fun srt(srtClient: WebClient): Agent = Srt(srtClient)
+
+    @Bean
+    fun trainTicketBox(korail: Agent, srt: Agent) = TrainTicketBox(korail, srt)
 }
